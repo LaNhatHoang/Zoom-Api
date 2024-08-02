@@ -2,10 +2,14 @@ const config = require("../config");
 const http = require("./http");
 
 module.exports = {
-    listMeeting: async (email, startDate, endDate) => 
+    listMeeting: async (email, options) =>
         await http.get(
-            `/report/users/${email}/meetings?from=${startDate}&to=${endDate}&type=past&page_size=300`),
-    listParticipant: async (uuid) => 
+            `/report/users/${email}/meetings`
+            , { params: options }
+        ),
+    listParticipant: async (id, options) =>
         await http.get(
-            `/report/meetings/${encodeURI(encodeURI(uuid))}/participants?page_size=300&page_number=1`)
+            `/report/meetings/${encodeURI(encodeURI(id))}/participants`
+            , { params: options }
+        )
 };

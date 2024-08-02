@@ -13,36 +13,34 @@ program
 program
     .command("meeting")
     .description("Get list meeting from date to date")
-    .option("-f, --from <type>", "Start date format: yyyy-MM-dd (Ex: 2024-06-30")
+    .option("-f, --from <type>", "Start date format: yyyy-MM-dd (Ex: 2024-06-30", "2024-01-01")
     .option("-t, --to <type>", "Finish date format: yyyy-MM-dd (Ex: 2024-07-20")
+    .option("-p, --page_size <type>", "Number of records", "300")
+    .option("-n, --next_page_token <type>", "Next page token to paginate through large result sets")
     .action(async (options) => {
-        let startDate = new Date(new Date().getTime() - (30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0]
-        let endDate = new Date().toISOString().split('T')[0]
-        try {
-            if (options.from) {
-                startDate = new Date(options.from).toISOString().split('T')[0]
-            }
-            if (options.to) {
-                endDate = new Date(options.to).toISOString().split('T')[0]
-            }
-            await zoom.getListMeeting(startDate, endDate)
-        } catch (error) {
-            console.log(`======`, error.message);
-        }
+        await zoom.getListMeeting(options)
     });
 
 program
-    .command("prt")
-    .description("Get list participant meeting by stt")
-    .argument('<stt>', 'Number stt meeting in list')
-    .action(async (argument) => {
-        const stt = Number(argument)
-        if (isNaN(stt)) {
-            console.log(`====== Type of argument <stt> invalid`);
-        } else {
-            await zoom.getListParticipant(stt)
-        }
+    .command("participant")
+    .description("Get list participant meeting")
+    .argument('<id>', 'The meeting ID or universally unique ID (UUID)')
+    .option("-p, --page_size <type>", "Number of records", "300")
+    .option("-n, --next_page_token <type>", "Next page token to paginate through large result sets")
+    .action(async (argument, options) => {
+        await zoom.getListParticipant(argument, options)
     });
+
+    program
+    .command("statistic")
+    .description("Statistic data participant")
+    .argument('<id>', 'The meeting ID or universally unique ID (UUID)')
+    .option("-p, --page_size <type>", "Number of records", "300")
+    .option("-n, --next_page_token <type>", "Next page token to paginate through large result sets")
+    .action(async (argument, options) => {
+        await zoom.statisticParticipant(argument, options)
+    });
+
 
 program.parse();
 
