@@ -4,7 +4,7 @@ const config = require('./src/config')
 const zoom = require('./src/zoom')
 
 program
-    .name("node zoom")
+    .name("zoomcli")
     .usage('[command] [option]')
     .description('CLI ZOOM API')
     .version('1.0.0', '-v, --version', 'Display version')

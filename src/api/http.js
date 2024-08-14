@@ -1,4 +1,8 @@
+// const path = require('path');
+// const axios = require(path.join(process.cwd(), 'node_modules', 'axios'));
+
 const axios = require("axios");
+
 const config = require("../config");
 const fs = require("fs");
 
@@ -26,6 +30,8 @@ async function refreshAuth() {
         );
         return response.data;
     } catch (error) {
+        console.log(error);
+        
         throw new Error("Error when refresh auth get access token!");
     }
 }
